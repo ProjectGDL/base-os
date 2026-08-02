@@ -1,0 +1,6 @@
+[General]
+LogoPath=/usr/share/icons/breeze/apps/22/kde-symbolic.svg
+Name=Project GDL OS
+Website=https://github.com/ProjectGDL/base-os
+IssuesPage=https://github.com/ProjectGDL/base-os/issues
+Variant=Kinoite
