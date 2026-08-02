@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-v1.json
+type: os-release
+properties:
+  NAME: "Project GDL OS"
+  ID: "projectgdl-os"
+  ID_LIKE: "fedora"
+  PRETTY_NAME: "Project GDL OS"
+  LOGO: "kde-symbolic"
+  HOME_URL: "https://github.com/ProjectGDL/base-os"
+  DOCUMENTATION_URL: "https://github.com/ProjectGDL/base-os"
+  SUPPORT_URL: "https://github.com/ProjectGDL/base-os"
+  BUG_REPORT_URL: "https://github.com/ProjectGDL/base-os/issues/"
