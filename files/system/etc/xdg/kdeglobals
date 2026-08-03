@@ -12,9 +12,12 @@ toolBarFont=Inter Variable,9,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0
 Theme=breeze
 
 [KDE]
+AutomaticLookAndFeel=false
+DefaultDarkLookAndFeel=GDL Dark
+DefaultLightLookAndFeel=GDL Light
+LookAndFeelPackage=GDL Light Fix
 contrast=4
 frameContrast=0.1
-widgetStyle=Breeze
 
 [WM]
 activeFont=Inter Variable,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0
