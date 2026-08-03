@@ -13,8 +13,8 @@ Theme=breeze
 
 [KDE]
 AutomaticLookAndFeel=false
-DefaultDarkLookAndFeel=GDL Dark
-DefaultLightLookAndFeel=GDL Light
+DefaultDarkLookAndFeel=GDL Dark Fix
+DefaultLightLookAndFeel=GDL Light Fix
 LookAndFeelPackage=GDL Light Fix
 contrast=4
 frameContrast=0.1

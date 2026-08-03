@@ -9,4 +9,5 @@ snippets:
             /usr/share/applications/opengamepadui.desktop \
             /usr/share/applications/org.gnome.Sysprof.desktop \
             /usr/share/applications/gamemode-nested.desktop \
-            /usr/share/ublue-os/docs/serve.sh
+            /usr/share/ublue-os/docs/serve.sh \
+            /etc/skel/.config/autostart/steam.desktop
