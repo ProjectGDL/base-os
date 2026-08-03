@@ -31,10 +31,10 @@ previous activity=Meta+Shift+A,Meta+Shift+A,Walk through activities (Reverse)
 show-on-mouse-pos=Meta+V,Meta+V,Show Clipboard Items at Mouse Position
 
 [services][org.kde.konsole.desktop]
-NewWindow=Meta+Q
+NewWindow=Meta+Q,Meta+Q,New Window
 
 [services][org.kde.plasma-systemmonitor.desktop]
-processes=Ctrl+Shift+Esc
+processes=Ctrl+Shift+Esc,Ctrl+Shift+Esc,Show process table
 
 [services][org.kde.spectacle.desktop]
-RectangularRegionScreenShot=Meta+Shift+S\tMeta+Shift+Print
+RectangularRegionScreenShot=Meta+Shift+S\tMeta+Shift+Print,Meta+Shift+S\tMeta+Shift+Print,Take a region screenshot

@@ -2,10 +2,12 @@
 kwin4_effect_roundedcornersEnabled=true
 
 [Round-Corners]
+InactiveCornerRadius=14
 InactiveOutlineThickness=0
 InactiveSecondOutlineThickness=0.75
 OutlineThickness=0
 SecondOutlineThickness=0.75
+Size=14
 UseNativeDecorationShadows=false
 
 [org.kde.kdecoration2]
