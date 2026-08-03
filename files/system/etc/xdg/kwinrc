@@ -1,2 +1,5 @@
+[Plugins]
+kwin4_effect_roundedcornersEnabled=true
+
 [org.kde.kdecoration2]
 ButtonsOnLeft=

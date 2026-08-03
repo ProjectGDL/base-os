@@ -14,6 +14,7 @@ modules:
   
   - from-file: os-release-config.yml
   - from-file: bazzite-cleanup.yml
+  - from-file: kwin-rounded-corners.yml
   - from-file: fonts-shell.yml
   - from-file: default-flatpaks.yml
 
