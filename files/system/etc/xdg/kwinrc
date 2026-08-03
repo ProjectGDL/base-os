@@ -1,5 +1,12 @@
 [Plugins]
 kwin4_effect_roundedcornersEnabled=true
 
+[Round-Corners]
+InactiveOutlineThickness=0
+InactiveSecondOutlineThickness=0.75
+OutlineThickness=0
+SecondOutlineThickness=0.75
+UseNativeDecorationShadows=false
+
 [org.kde.kdecoration2]
 ButtonsOnLeft=

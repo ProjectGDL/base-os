@@ -5,6 +5,7 @@ snippets:
   - |
     RUN dnf install -y \
             zsh \
+            fish \
             rsms-inter-fonts \
         && \
         dnf clean all && \
