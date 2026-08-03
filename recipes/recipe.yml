@@ -20,5 +20,5 @@ modules:
   - from-file: omz-shell.yml
   - from-file: portal-breeze.yml
   - from-file: default-flatpaks.yml
-
+  - type: initramfs
   - type: signing
