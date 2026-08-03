@@ -4,5 +4,6 @@ HOME=/var/home
 INACTIVE=-1
 EXPIRE=
 SHELL=/bin/zsh
+GROUPS=input
 SKEL=/etc/skel
 CREATE_MAIL_SPOOL=yes
