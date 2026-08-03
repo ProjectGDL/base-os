@@ -37,3 +37,12 @@ jobs:
           maximize_build_space: true
 
           use_cache: true
+
+      - name: Notify Telegram
+        uses: robotomize/notify-telegram@v0.1.0
+        if: success()
+        with:
+          chat: ${{ secrets.chat }}
+          token: ${{ secrets.token }}
+          status: ${{ job.status }}
+          message: ${{ format('Image Ready ({0})', matrix.recipe) }}
