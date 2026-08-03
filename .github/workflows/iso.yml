@@ -1,0 +1,43 @@
+name: build-iso
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+  schedule:
+    - cron: "30 06 * * *"
+
+concurrency:
+  group: iso-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  packages: read
+  id-token: write
+
+jobs:
+  iso:
+    name: Generate ISO
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/blue-build/cli:latest
+      options: --privileged
+    steps:
+      - name: Login to registry (needed only if ghcr image is private)
+        run: |
+          podman login ghcr.io \
+            --username "${{ github.actor }}" \
+            --password "${{ secrets.GITHUB_TOKEN }}" \
+            --authfile /auth.json
+
+      - name: Generate ISO from published image
+        run: |
+          bluebuild generate-iso \
+            --iso-name base-os.iso \
+            image ghcr.io/projectgdl/base-os:latest
+
+      - name: Upload ISO
+        uses: actions/upload-artifact@v4
+        with:
+          name: base-os.iso
+          path: ./*.iso

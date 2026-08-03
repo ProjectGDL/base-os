@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-v1.json
+type: containerfile
+snippets:
+  - |
+    RUN set -euo pipefail && \
+        dnf install -y git && \
+        git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh /usr/share/oh-my-zsh && \
+        git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/zsh-syntax-highlighting && \
+        rm -rf /usr/share/oh-my-zsh/.git /usr/share/oh-my-zsh/custom/plugins/zsh-syntax-highlighting/.git && \
+        chmod -R a+rX /usr/share/oh-my-zsh && \
+        dnf remove -y --noautoremove git && \
+        dnf clean all && \
+        rm -rf /var/cache/dnf
