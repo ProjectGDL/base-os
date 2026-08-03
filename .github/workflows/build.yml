@@ -10,7 +10,7 @@ concurrency:
   # only run one build at a time
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
   cancel-in-progress: true
-  
+
 jobs:
   bluebuild:
     name: Build Custom Image
@@ -20,13 +20,12 @@ jobs:
       packages: write
       id-token: write
     strategy:
-      fail-fast: false # stop GH from cancelling all matrix builds if one fails
+      fail-fast: false
       matrix:
         recipe:
-          # !! Add your recipes here
           - recipe.yml
+          - recipe-amd.yml
     steps:
-      # the build is fully handled by the reusable github action
       - name: Build Custom Image
         uses: blue-build/github-action@v1.12
         with:
@@ -35,8 +34,6 @@ jobs:
           registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}
 
-          # enabled by default, disable if your image is small and you want faster builds
           maximize_build_space: true
 
-          # cache intermediate layers in the registry for faster rebuilds
           use_cache: true

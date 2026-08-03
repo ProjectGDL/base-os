@@ -3,7 +3,7 @@
 name: base-os
 description: Project GDL OS
 
-base-image: ghcr.io/ublue-os/bazzite-nvidia
+base-image: ghcr.io/ublue-os/bazzite
 image-version: latest
 
 modules:
