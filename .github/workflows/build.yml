@@ -39,7 +39,7 @@ jobs:
           use_cache: true
 
       - name: Notify Telegram
-        uses: robotomize/notify-telegram@v0.1.0
+        uses: robotomize/notify-telegram@v0.2.4
         if: always()
         with:
           chat: ${{ secrets.chat }}
