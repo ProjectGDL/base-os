@@ -1,0 +1,11 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-v1.json
+type: containerfile
+snippets:
+  - |
+    RUN dnf install -y \
+            zsh \
+            rsms-inter-fonts \
+        && \
+        dnf clean all && \
+        rm -rf /var/cache/dnf

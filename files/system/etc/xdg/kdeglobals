@@ -1,0 +1,24 @@
+[General]
+XftAntialias=true
+XftHintStyle=hintslight
+XftSubPixel=none
+fixed=Maple Mono NF,10.5,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0
+font=Inter Variable,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0
+menuFont=Inter Variable,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0
+smallestReadableFont=Inter Variable,8,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0
+toolBarFont=Inter Variable,9,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0
+
+[Icons]
+Theme=breeze
+
+[KDE]
+AutomaticLookAndFeel=true
+DefaultDarkLookAndFeel=GDL Dark
+DefaultLightLookAndFeel=GDL Light
+LookAndFeelPackage=GDL Light
+contrast=4
+frameContrast=0.1
+widgetStyle=Breeze
+
+[WM]
+activeFont=Inter Variable,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0

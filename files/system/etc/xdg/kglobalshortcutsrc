@@ -1,0 +1,40 @@
+[KDE Keyboard Layout Switcher]
+Switch to Last-Used Keyboard Layout=Meta+Alt+L,Meta+Alt+L,Switch to Last-Used Keyboard Layout
+Switch to Next Keyboard Layout=Meta+Space,Meta+Alt+K,Switch to Next Keyboard Layout
+
+[ksmserver]
+Lock Session=Screensaver\tMeta+L,Screensaver\tMeta+L,Lock Session
+
+[kwin]
+Edit Tiles=Meta+T,Meta+T,Toggle Tiles Editor
+Grid View=Meta+G,Meta+G,Toggle Grid View
+Kill Window=Meta+Ctrl+Esc,Meta+Ctrl+Esc,Kill Window
+MoveMouseToCenter=Meta+F6,Meta+F6,Move Mouse to Center
+MoveMouseToFocus=Meta+F5,Meta+F5,Move Mouse to Focus
+Overview=Meta+W,Meta+W,Toggle Overview
+Show Desktop=Meta+D,Meta+D,Peek at Desktop
+Window Maximize=Meta+PgUp,Meta+PgUp,Maximize Window
+Window Minimize=Meta+PgDown,Meta+PgDown,Minimize Window
+Window Restore=Meta+Backspace,Meta+Backspace,Restore Window
+disableInputCapture=Meta+Shift+Esc,Meta+Shift+Esc,Disable Active Input Capture
+view_actual_size=Meta+0,Meta+0,Zoom to Actual Size
+view_zoom_in=Meta++\tMeta+=,Meta++\tMeta+=,Zoom In
+view_zoom_out=Meta+-,Meta+-,Zoom Out
+
+[plasmashell]
+activate application launcher=Meta\tAlt+F1,Meta\tAlt+F1,Activate Application Launcher
+clipboard_action=Meta+Ctrl+X,Meta+Ctrl+X,Automatic Action Popup Menu
+cycle-panels=Meta+Alt+P,Meta+Alt+P,Move keyboard focus between panels
+manage activities=Meta+Q,Meta+Q,Show Activity Switcher
+next activity=Meta+A,Meta+A,Walk through activities
+previous activity=Meta+Shift+A,Meta+Shift+A,Walk through activities (Reverse)
+show-on-mouse-pos=Meta+V,Meta+V,Show Clipboard Items at Mouse Position
+
+[services][org.kde.konsole.desktop]
+NewWindow=Meta+Q
+
+[services][org.kde.plasma-systemmonitor.desktop]
+processes=Ctrl+Shift+Esc
+
+[services][org.kde.spectacle.desktop]
+RectangularRegionScreenShot=Meta+Shift+S\tMeta+Shift+Print
