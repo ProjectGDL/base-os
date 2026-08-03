@@ -1,0 +1,52 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-v1.json
+type: containerfile
+snippets:
+  - |
+    RUN set -euo pipefail && \
+        dnf install -y \
+            cmake \
+            gcc-c++ \
+            extra-cmake-modules \
+            kf6-rpm-macros \
+            kwin-devel \
+            kf6-kconfigwidgets-devel \
+            kf6-kwindowsystem-devel \
+            kf6-ki18n-devel \
+            kf6-kcmutils-devel \
+            qt6-qtbase-devel \
+            qt6-qtbase-private-devel \
+            libepoxy-devel \
+            libdrm-devel \
+            libxcb-devel \
+            wayland-devel \
+            git \
+        && \
+        git clone --depth=1 https://github.com/matinlotfali/KDE-Rounded-Corners /tmp/krc && \
+        cmake -S /tmp/krc -B /tmp/krc/build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+        && \
+        cmake --build /tmp/krc/build -j$(nproc) && \
+        cmake --install /tmp/krc/build && \
+        rm -rf /tmp/krc && \
+        dnf remove -y --noautoremove \
+            cmake \
+            gcc-c++ \
+            extra-cmake-modules \
+            kf6-rpm-macros \
+            kwin-devel \
+            kf6-kconfigwidgets-devel \
+            kf6-kwindowsystem-devel \
+            kf6-ki18n-devel \
+            kf6-kcmutils-devel \
+            qt6-qtbase-devel \
+            qt6-qtbase-private-devel \
+            libepoxy-devel \
+            libdrm-devel \
+            libxcb-devel \
+            wayland-devel \
+            git \
+        && \
+        dnf clean all && \
+        rm -rf /var/cache/dnf

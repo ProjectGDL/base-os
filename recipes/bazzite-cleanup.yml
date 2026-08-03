@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-v1.json
+type: containerfile
+snippets:
+  - |
+    RUN rm -f \
+            /usr/share/applications/webapp-manager.desktop \
+            /usr/share/applications/input-remapper-gtk.desktop \
+            /usr/share/applications/opengamepadui.desktop \
+            /usr/share/applications/org.gnome.Sysprof.desktop \
+            /usr/share/applications/gamemode-nested.desktop \
+            /usr/share/ublue-os/docs/serve.sh
