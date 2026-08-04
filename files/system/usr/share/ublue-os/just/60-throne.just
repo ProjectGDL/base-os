@@ -7,11 +7,6 @@ throne-install:
     #!/usr/bin/env bash
     set -euo pipefail
 
-    if [ -f /var/lib/extensions/throne.raw ]; then
-        echo "Throne is already there. Try updating it: ujust throne-update"
-        exit 0
-    fi
-
     echo "Downloading Throne {{throne_version}}..."
     sudo mkdir -p /var/lib/extensions
 
@@ -49,27 +44,5 @@ throne-remove:
     fi
     sudo rm /var/lib/extensions/throne.raw
     sudo systemd-sysext refresh
+
     echo "Throne has been removed."
-
-# Show Throne status
-[group('vpn')]
-throne-status:
-    #!/usr/bin/env bash
-    if [ -f /var/lib/extensions/throne.raw ]; then
-        echo "Version {{throne_version}} installed"
-        systemd-sysext status | grep -B1 -A1 throne || true
-    else
-        echo "Not present. To install, use: ujust throne-install"
-    fi
-
-# Update Throne
-[group('vpn')]
-throne-update:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    if [ ! -f /var/lib/extensions/throne.raw ]; then
-        echo "Throne is not present. To install, use: ujust throne-install"
-        exit 1
-    fi
-    just throne-remove
-    just throne-install

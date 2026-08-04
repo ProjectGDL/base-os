@@ -1,0 +1,23 @@
+[Desktop Entry]
+Name=GDL Portal
+Name[cs]=Portál GDL
+Name[de]=GDL Portal
+Name[el]=Πύλη GDL
+Name[es]=Portal GDL
+Name[fr]=Portail GDL
+Name[it]=Portale GDL
+Name[ru]=GDL Портал
+Comment=Helps you setup GDL
+Comment[cs]=Pomůže vám nastavit GDL
+Comment[de]=Hilft bei der Einrichtung von GDL
+Comment[el]=Σας βοηθά να ρυθμίσετε το GDL
+Comment[es]=Te ayuda a configurar GDL
+Comment[fr]=Vous aide à configurer GDL
+Comment[it]=Ti aiuta a configurare GDL
+Comment[ru]=Помогает вам настроить GDL
+Exec=yafti_gtk.py /usr/share/yafti/yafti.yml
+Icon=io.github.ublue_os.yafti_gtk
+Terminal=false
+Type=Application
+Categories=System;Settings;
+Keywords=gdl;setup;configuration;portal;
