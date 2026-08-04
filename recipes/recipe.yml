@@ -7,6 +7,7 @@ base-image: ghcr.io/ublue-os/bazzite-nvidia
 image-version: latest
 
 modules:
+  - from-file: docker.yml
   - type: files
     files:
       - source: system
