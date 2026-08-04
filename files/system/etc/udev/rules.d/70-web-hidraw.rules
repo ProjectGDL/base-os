@@ -1,0 +1,5 @@
+# You can now configure pretty much any device without a pain in the ass
+# yay
+
+SUBSYSTEM=="hidraw", MODE="0666"
+SUBSYSTEM=="hidraw", TAG+="uaccess"

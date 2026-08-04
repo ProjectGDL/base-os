@@ -6,7 +6,7 @@ properties:
   ID: "projectgdl-os"
   ID_LIKE: "fedora"
   PRETTY_NAME: "Project GDL OS"
-  LOGO: "kde-symbolic"
+  LOGO: "projectgdl-logo"
   HOME_URL: "https://github.com/ProjectGDL/base-os"
   DOCUMENTATION_URL: "https://github.com/ProjectGDL/base-os"
   SUPPORT_URL: "https://github.com/ProjectGDL/base-os"

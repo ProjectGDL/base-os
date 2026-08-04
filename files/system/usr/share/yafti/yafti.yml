@@ -6,28 +6,25 @@ screens:
   - id: gdl-telegram
     icon: telegram
     title: Join our Telegram community
-    description: New to Project GDL or Linux? Join our Telegram chat for help, news,
-      and discussion.
+    description: Get help, news, and discussion
     default: false
     script: xdg-open https://t.me/+HmbbMdR-GTo2ZTIy
   - id: gdl-base-os
     icon: project-gdl
     title: Project GDL Base OS
-    description: Explore the base operating system and view available releases on
-      our GitHub repository.
+    description: View the base OS and available releases on GitHub
     default: false
     script: xdg-open https://github.com/ProjectGDL/base-os
   - id: gdl-issues
     icon: tools-report-bug
     title: Report issues and view bug tracker
-    description: Found a problem? Visit our issue tracker on GitHub to report bugs
-      and see known issues.
+    description: Report bugs or view known issues on GitHub
     default: false
     script: xdg-open https://github.com/ProjectGDL/base-os/issues
   - id: gdl-github
     icon: github
     title: Visit our GitHub organization
-    description: Explore all Project GDL repositories and contributions.
+    description: Explore Project GDL repositories
     default: false
     script: xdg-open https://github.com/ProjectGDL
 - title: Install Applications
@@ -36,22 +33,21 @@ screens:
   - id: android-platform-tools
     icon: android
     title: Android Platform Tools
-    description: Command-line tools for interfacing with the Android operating system
-      — installed using Brew.
+    description: CLI tools for Android development
     default: false
     script: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew install
       --cask android-platform-tools
   - id: antigravity-linux
     icon: antigravity
     title: Antigravity
-    description: AI-powered IDE from Google — installed using Brew.
+    description: Google's AI-powered IDE
     default: false
     script: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew tap ublue-os/tap
       && brew trust --tap ublue-os/tap && brew install --cask antigravity-linux
   - id: asus
     icon: asus-rog
     title: asusctl & ROG Control Center
-    description: Utilities for management of ASUS hardware.
+    description: ASUS hardware management utilities
     default: false
     status_script: ujust asus status
     options:
@@ -66,8 +62,7 @@ screens:
   - id: bazzite-cli
     icon: bazzite-cli
     title: Bazzite CLI
-    description: Setup a Bluefin-style command-line interface (CLI) experience with
-      various utilities.
+    description: Bluefin-style CLI setup with utilities
     default: false
     options:
     - id: enable
@@ -81,8 +76,7 @@ screens:
   - id: boxtron
     icon: dosbox
     title: Boxtron
-    description: Steam Play compatibility tool for running DOS games with native Linux
-      DOSBox — installed using Distrobox.
+    description: DOS games via Steam Play + Distrobox
     default: false
     status_script: ujust install-boxtron status
     options:
@@ -97,7 +91,7 @@ screens:
   - id: coolercontrol
     icon: coolercontrol
     title: CoolerControl
-    description: Software center for surveying sensors and setting up thermal profiles.
+    description: Monitor sensors and set thermal profiles
     default: false
     status_script: ujust install-coolercontrol status
     options:
@@ -112,8 +106,7 @@ screens:
   - id: davinci-resolve
     icon: davinci-resolve
     title: DaVinci Resolve
-    description: Cinema production non-linear editor (NLE) from Blackmagic Design
-      — installed using davincibox.
+    description: Professional video editor (NLE) via davincibox
     default: false
     status_script: ujust install-davinci status
     options:
@@ -128,7 +121,7 @@ screens:
   - id: decky-loader
     icon: decky
     title: Decky Loader
-    description: Plugin loader for Steam, created for Steam Deck.
+    description: Plugin loader for Steam/Steam Deck
     default: false
     status_script: ujust setup-decky status
     options:
@@ -144,7 +137,7 @@ screens:
   - id: decky-bazzite-buddy
     icon: decky-plugin
     title: Decky Plugin — Bazzite Buddy
-    description: Enables viewing Bazzite version changes in the dedicated Game Mode.
+    description: View Bazzite version changes in Game Mode
     default: false
     status_script: ujust get-decky-bazzite-buddy status
     options:
@@ -157,7 +150,7 @@ screens:
   - id: decky-lossless-scaling
     icon: lossless-scaling
     title: Decky Plugin — Lossless Scaling
-    description: Streamlines configuration of Lossless Scaling frame generation.
+    description: Configure Lossless Scaling frame generation
     default: false
     status_script: ujust get-decky-lossless-scaling status
     options:
@@ -170,8 +163,7 @@ screens:
   - id: decky-framegen
     icon: optiscaler
     title: Decky Plugin — OptiScaler
-    description: Sets up OptiScaler for any Steam game, a tool for managing integrated
-      upscaling and frame generation.
+    description: Configure upscaling and frame generation for Steam games
     default: false
     status_script: ujust get-framegen status
     options:
@@ -184,7 +176,7 @@ screens:
   - id: emudeck
     icon: emudeck
     title: EmuDeck
-    description: Curated setup for video game emulation, created for Steam Deck.
+    description: Curated video game emulation setup for Steam Deck
     default: false
     status_script: ujust get-emudeck status
     options:
@@ -197,24 +189,21 @@ screens:
   - id: jetbrains-toolbox-linux
     icon: jetbrains-toolbox
     title: JetBrains Toolbox
-    description: Utility for managing IDE installs from JetBrains — installed using
-      Brew.
+    description: Manage JetBrains IDE installs via Brew
     default: false
     script: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew tap ublue-os/tap
       && brew trust --tap ublue-os/tap && brew install --cask jetbrains-toolbox-linux
   - id: lm-studio-linux
     icon: lm-studio
     title: LM Studio
-    description: Suite for locally utilizing large language models (LLMs) — installed
-      using Brew.
+    description: Local LLM suite via Brew
     default: false
     script: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew tap ublue-os/tap
       && brew trust --tap ublue-os/tap && brew install --cask lm-studio-linux
   - id: lsfg-vk
     icon: lossless-scaling
     title: Lossless Scaling — Vulkan Layer
-    description: Install «lsfg-vk», the adapter for Lossless Scaling frame generation
-      on Linux.
+    description: Vulkan adapter for Lossless Scaling on Linux
     default: false
     status_script: ujust get-lsfg status
     options:
@@ -229,7 +218,7 @@ screens:
   - id: openrazer
     icon: openrazer
     title: OpenRazer
-    description: Community-led Linux support software for Razer gaming hardware.
+    description: Linux support for Razer gaming hardware
     default: false
     status_script: ujust install-openrazer status
     options:
@@ -252,7 +241,7 @@ screens:
   - id: openrgb
     icon: openrgb
     title: OpenRGB
-    description: Vendor agnostic, open source RGB lighting control.
+    description: Open source RGB lighting control
     default: false
     status_script: ujust openrgb status
     options:
@@ -265,7 +254,7 @@ screens:
   - id: opentabletdriver
     icon: opentabletdriver
     title: OpenTabletDriver
-    description: Open source, configurable, and highly compatible drawing tablet driver.
+    description: Drawing tablet driver with open source
     default: false
     status_script: ujust opentabletdriver status
     options:
@@ -278,7 +267,7 @@ screens:
   - id: resilio-sync
     icon: resilio-sync
     title: Resilio Sync
-    description: File synchronization utility powered by BitTorrent.
+    description: File sync via BitTorrent
     default: false
     status_script: ujust resilio-sync status
     options:
@@ -291,8 +280,7 @@ screens:
   - id: steamcmd
     icon: steam
     title: SteamCMD
-    description: Command-line version of the Steam client, primarily for dedicated
-      game servers.
+    description: CLI version of Steam for game servers
     default: false
     status_script: ujust get-steamcmd status
     options:
@@ -305,7 +293,7 @@ screens:
   - id: sunshine
     icon: sunshine
     title: Sunshine
-    description: Self-hosted video game streaming host for Moonlight.
+    description: Self-hosted video game streaming for Moonlight
     default: false
     status_script: ujust setup-sunshine status
     options:
@@ -313,7 +301,7 @@ screens:
       label: Enable Sunshine
       script: ujust setup-sunshine enable
     - id: enable-brew
-      label: Enable Sunshine Beta (installed using Brew)
+      label: Enable Sunshine Beta (via Brew)
       script: ujust setup-sunshine enable-beta
     - id: update
       label: Update Sunshine
@@ -330,24 +318,21 @@ screens:
   - id: visual-studio-code-linux
     icon: visual-studio-code
     title: Visual Studio Code
-    description: Open source code editor and debugger from Microsoft — installed using
-      Brew.
+    description: Microsoft code editor from Brew
     default: false
     script: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew tap ublue-os/tap
       && brew trust --tap ublue-os/tap && brew install --cask visual-studio-code-linux
   - id: vscodium-linux
     icon: vscodium
     title: VSCodium
-    description: Strictly open source community edition of Visual Studio Code — installed
-      using Brew.
+    description: Community open source VS Code via Brew
     default: false
     script: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew tap ublue-os/tap
       && brew trust --tap ublue-os/tap && brew install --cask vscodium-linux
   - id: waydroid
     icon: waydroid
     title: Waydroid
-    description: Android system in a container for app compatibility on Linux. Incompatible
-      with NVIDIA drivers.
+    description: Android container for Linux (no NVIDIA compatibility)
     default: false
     options:
     - id: init
@@ -365,55 +350,39 @@ screens:
     - id: helper
       label: Install Helper
       script: ujust configure-waydroid helper
-- title: Manage Bazzite
+- title: Manage GDL
   description: System management and configuration
   actions:
-  - id: update-bazzite
+  - id: update-gdl
     icon: system-software-update
     title: Update your system
-    description: Update Bazzite, Flatpak apps, and more.
+    description: Update GDL, Flatpak apps, and more
     default: false
     script: ujust update
-  - id: rebase-bazzite-stable
-    icon: branch-stable
-    title: Move to the stable update track
-    description: Rebase your system to the «stable» Bazzite image tag.
-    default: false
-    script: brh rebase stable -y && reboot
-  - id: rebase-bazzite-testing
-    icon: branch-testing
-    title: Move to the testing update track
-    description: Rebase your system to the «testing» Bazzite image tag.
-    default: false
-    script: brh rebase testing -y && reboot
-  - id: reset-bazzite
+  - id: reset-gdl
     icon: edit-clear
     title: Shed system software layers
-    description: Reset «rpm-ostree» layers back to the default state, removing added
-      packages. Will not touch user data.
+    description: Reset rpm-ostree layers to default, remove added packages
     default: false
     script: rpm-ostree reset
   - id: cancel-pending-deployment
     icon: process-stop
     title: Cancel pending deployment
-    description: Remove the next image deployment, halting all updates or layering
-      changes pending reboot.
+    description: Remove next image deployment and halt pending updates
     default: false
     script: rpm-ostree cleanup -p; status=$?; echo; echo "Press Enter to close...";
       read -r _; exit $status
   - id: verify-image
     icon: security-high
-    title: Move to a ‘verified’ image
-    description: Detect if you are on an ‘unverified’ image of Bazzite and then, if
-      applicable, move you to a signed one.
+    title: Move to a 'verified' image
+    description: Detect and move to a signed Bazzite image if needed
     default: false
     script: ujust verify-image; status=$?; echo; echo "Press Enter to close..."; read
       -r _; exit $status
   - id: wake-on-lan
     icon: network-wired
     title: Enable Wake-on-LAN functionality
-    description: Toggle ‘magic packet’ detection for your LAN adapter, allowing remote
-      powering on of your device.
+    description: Toggle magic packet detection for remote power-on
     default: false
     status_script: ujust wol status
     options:
@@ -426,51 +395,10 @@ screens:
     - id: force-enable
       label: Force Enable Wake-on-LAN
       script: ujust wol force-enable
-  - id: cec-sleep-standby
-    icon: video-television
-    title: Enable CEC sleep synchronization
-    description: Toggle setting your television to standby on system sleep via HDMI-CEC.
-      Requires CEC-compatible hardware, or a dedicated adapter.
-    default: false
-    status_script: ujust cec-sleep status
-    options:
-    - id: enable
-      label: Enable HDMI-CEC Standby on System Sleep
-      script: ujust cec-sleep enable
-    - id: disable
-      label: Disable HDMI-CEC Standby on System Sleep
-      script: ujust cec-sleep disable
-  - id: tailscale
-    icon: tailscale
-    title: Enable Tailscale
-    description: Toggle the Tailscale service for mesh VPN support.
-    default: false
-    status_script: ujust tailscale status
-    options:
-    - id: enable
-      label: Enable Tailscale
-      script: ujust tailscale enable
-    - id: disable
-      label: Disable Tailscale
-      script: ujust tailscale disable
-  - id: cockpit
-    icon: cockpit
-    title: Enable Cockpit
-    description: Toggle the Cockpit web interface service, for centralized system
-      management from a browser.
-    default: false
-    status_script: ujust cockpit status
-    options:
-    - id: enable
-      label: Enable Cockpit
-      script: ujust cockpit enable
-    - id: disable
-      label: Disable Cockpit
-      script: ujust cockpit disable
   - id: ssh-service
     icon: network-server
     title: Enable SSH remote access
-    description: Toggle the secure shell (SSH) service for advanced remote management.
+    description: Toggle SSH service for remote management
     default: false
     status_script: ujust ssh status
     options:
@@ -483,7 +411,7 @@ screens:
   - id: hide-grub
     icon: preferences-system
     title: Manage GRUB menu visibility
-    description: Configure if the GRUB menu should appear during the system boot sequence.
+    description: Configure GRUB menu appearance at boot
     default: true
     options:
     - id: hide
@@ -498,15 +426,14 @@ screens:
   - id: grub-timeout
     icon: chronometer
     title: Configure GRUB menu timeout
-    description: Set how long GRUB should wait before booting the default entry. This
-      will regenerate the GRUB configuration file.
+    description: Set GRUB wait time before default boot
     default: false
     options:
     - id: no-timeout
       label: No Timeout
       script: ujust grub-timeout no-timeout
     - id: instant
-      label: Skip Menu (Press F8 or hold Shift to show GRUB)
+      label: Skip Menu (F8 or Shift to show GRUB)
       script: ujust grub-timeout instant
     - id: 1-second
       label: Timeout After 1 Second
@@ -526,8 +453,7 @@ screens:
   - id: Reboot to UEFI
     icon: system-reboot
     title: Reboot to UEFI firmware settings
-    description: Reboot directly to your platform's UEFI options — useful for changing
-      boot priority, or other settings.
+    description: Reboot to UEFI for boot/firmware changes
     default: false
     script: systemctl reboot --firmware-setup
 - title: Tweak Systems
@@ -536,7 +462,7 @@ screens:
   - id: add-input-group
     icon: input-gaming
     title: Add «input» to your user groups
-    description: Required by certain game controller drivers.
+    description: Required by controllers and CBF
     default: true
     status_script: ujust add-user-to-input-group status
     options:
@@ -549,15 +475,13 @@ screens:
   - id: boot-to-windows
     icon: distributor-logo-windows
     title: Boot to Windows from Steam
-    description: Add a shortcut in Steam for automated booting into Windows — could
-      be handy in setups with a dual-boot.
+    description: Add Steam shortcut for dual-boot Windows
     default: false
     script: ujust setup-boot-windows-steam
   - id: steam-icons
     icon: desktop
     title: Clean Steam desktop icons automatically
-    description: Enable a login script to remove icons generated by Steam from your
-      desktop — useful when installing games via Game Mode.
+    description: Remove Steam-generated desktop icons via login script
     default: false
     status_script: ujust steam-icons status
     options:
@@ -573,7 +497,7 @@ screens:
   - id: snapper
     icon: drive-harddisk
     title: Configure btrfs snapshots
-    description: Manage Snapper snapshots for «/var/home».
+    description: Manage Snapper snapshots for /var/home
     default: false
     status_script: ujust configure-snapshots status
     options:
@@ -592,8 +516,7 @@ screens:
   - id: watchdog
     icon: chronometer
     title: Disable watchdog recovery mechanisms
-    description: Toggle persistent software/hardware watch mechanisms for recovery
-      under some failure conditions.
+    description: Toggle watchdog recovery under failure conditions
     default: false
     status_script: ujust configure-watchdog status
     options:
@@ -608,8 +531,7 @@ screens:
   - id: global-dlss
     icon: nvidia-dlss
     title: Enable globally upgrading DLSS
-    description: Toggle automated version upgrades for upscaling. Requires a custom
-      edition of Proton with this feature (e.g. Proton-GE, Proton-EM).
+    description: Toggle DLSS auto-upgrade (requires Proton-GE, etc.)
     default: false
     options:
     - id: enable
@@ -621,8 +543,7 @@ screens:
   - id: global-fsr4-rdna3
     icon: amd-fsr
     title: Enable globally upgrading FSR3.1+ to FSR4 — for RDNA3 graphics cards
-    description: Toggle upscaling autoupgrades, specific to the RDNA3 architecture
-      (e.g. 7000 series). Requires a custom edition of Proton with this feature.
+    description: Toggle FSR auto-upgrade for RDNA3 (7000 series)
     default: false
     options:
     - id: enable
@@ -634,8 +555,7 @@ screens:
   - id: global-fsr4
     icon: amd-fsr
     title: Enable globally upgrading FSR3.1+ to FSR4 — for RDNA4 graphics cards
-    description: Toggle automated version upgrades for upscaling. Requires Proton
-      10 or above, Proton-GE 10-25+ or another edition with this feature.
+    description: Toggle FSR auto-upgrade (requires Proton 10+)
     default: false
     options:
     - id: enable
@@ -647,7 +567,7 @@ screens:
   - id: password-asterisks
     icon: dialog-password
     title: Enable visible password asterisks in CLI
-    description: Toggle showing feedback for characters typed in «sudo» password prompts.
+    description: Show feedback for sudo password input
     default: false
     options:
     - id: 'on'
@@ -659,7 +579,7 @@ screens:
   - id: displaylink
     icon: video-display
     title: Install support for DisplayLink
-    description: Manage DisplayLink support for laptop docks and USB display adapters.
+    description: Manage DisplayLink for docks and USB adapters
     default: false
     status_script: ujust install-displaylink status
     options:
@@ -674,15 +594,14 @@ screens:
   - id: configure-beesd
     icon: drive-harddisk
     title: Setup btrfs deduplication
-    description: Configure «beesd» for deduplication of btrfs file systems.
+    description: Configure beesd for btrfs deduplication
     default: false
     script: ujust configure-beesd; status=$?; echo; echo "Press Enter to close...";
       read -r _; exit $status
   - id: virtual-audio-channels
     icon: audio-card
     title: Setup separate virtual channels for audio
-    description: Create PipeWire sinks for separate ‘Game’, ‘Voice’, ‘Browser’, and
-      ‘Music’ audio routing.
+    description: Create PipeWire sinks for Game/Voice/Browser/Music routing
     default: false
     status_script: ujust setup-virtual-channels status
     options:
@@ -697,8 +616,7 @@ screens:
   - id: virtual-headphone-surround
     icon: audio-headphones
     title: Setup virtual headphone surround
-    description: Create PipeWire sink for 7.1 surround sound — virtualized for headphones
-      through the Steam Audio HRTF.
+    description: Create 7.1 surround PipeWire sink via Steam Audio HRTF
     default: false
     status_script: ujust setup-virtual-surround status
     options:
@@ -713,7 +631,7 @@ screens:
   - id: virtualization
     icon: computer
     title: Setup virtualization
-    description: Manage host virtualization support for virt-manager.
+    description: Manage host virtualization for virt-manager
     default: false
     options:
     - id: virt-on
@@ -727,7 +645,7 @@ screens:
   - id: automounting
     icon: drive-removable-media
     title: Toggle automatically mounting disks
-    description: Manage automounting of labeled btrfs/ext4 partitions under «/run/media/system».
+    description: Manage automounting of btrfs/ext4 partitions
     default: false
     status_script: ujust automounting status
     options:
@@ -740,8 +658,7 @@ screens:
   - id: restore-input-remapper
     icon: input-keyboard
     title: Toggle Input Remapper
-    description: Manage Input Remapper, or make its launcher visible in non-desktop
-      images.
+    description: Manage Input Remapper in non-desktop images
     default: false
     status_script: ujust restore-input-remapper status
     options:
@@ -756,8 +673,7 @@ screens:
   - id: steamos-automount
     icon: media-floppy
     title: Toggle SteamOS disk automounting
-    description: Manage mounting rules sourced from SteamOS — useful for stopping
-      NTFS partitions from getting mounted automatically.
+    description: Manage SteamOS mounting rules for NTFS partitions
     default: false
     status_script: ujust steamos-automount status
     options:
@@ -773,7 +689,7 @@ screens:
   - id: throne
     icon: throne-vpn
     title: Throne VPN
-    description: A secure VPN client for encrypted network connections.
+    description: Secure VPN client for encrypted connections
     default: false
     status_script: ujust throne status 2>/dev/null && echo "installed" || echo "not
       installed"
@@ -792,22 +708,20 @@ screens:
   - id: get-logs
     icon: text-x-log
     title: Collect system logs
-    description: Gather system records and information into a shareable web page report.
+    description: Gather system records into a shareable web report
     default: false
     script: ujust get-logs; status=$?; echo; echo "Press Enter to close..."; read
       -r _; exit $status
   - id: rollback-bazzite
     icon: edit-undo
     title: Rollback to the prior Bazzite deployment
-    description: Revert the ‘current deployment’ back to the former one. May be useful
-      if the booted image has an issue.
+    description: Revert to previous deployment if current has issues
     default: false
     script: brh rollback -y && reboot
   - id: save-panics
     icon: dialog-warning
     title: Enable saving kernel panics
-    description: Toggle the «ramoops» panic logger to keep system crash records on
-      reboot.
+    description: Toggle ramoops panic logger for crash records
     default: false
     status_script: ujust toggle-save-panics status
     options:
@@ -822,37 +736,32 @@ screens:
   - id: fix-proton-hang
     icon: wine
     title: Terminate all Wine/Proton processes
-    description: Send «kill» signal to processes pertaining to Wine/Proton. May be
-      useful if a task seems to be stuck.
+    description: Kill stuck Wine/Proton tasks
     default: false
     script: ujust fix-proton-hang
   - id: fix-gmod
     icon: applications-games
     title: Patch 64-bit beta version for Garry's Mod
-    description: Fix many issues with the native 64-bit Linux version of Garry's
-      Mod through a third-party patch.
+    description: Fix Garry's Mod 64-bit Linux version issues
     default: false
     script: ujust fix-gmod
   - id: fix-reset-steam
     icon: steam
     title: Reset Steam installation
-    description: Remove local Steam files and reacquire them fresh from Valve servers.
-      Will not delete game or save files!
+    description: Remove local Steam files and reacquire from Valve
     default: false
     script: ujust fix-reset-steam
   - id: restart-pipewire
     icon: audio-volume-high
     title: Restart PipeWire service
-    description: Restart the user service for audio, video sharing, and MIDI device
-      connections.
+    description: Restart audio and MIDI device service
     default: false
     script: ujust restart-pipewire; status=$?; echo; echo "Press Enter to close...";
       read -r _; exit $status
   - id: bluetooth-headset-mic
     icon: network-bluetooth
     title: Disable microphone in Bluetooth headsets
-    description: Toggle microphone profile to ensure certain Bluetooth devices maintain
-      full playback quality.
+    description: Toggle microphone profile for full playback quality
     default: false
     status_script: ujust toggle-bt-mic status
     options:
@@ -867,9 +776,7 @@ screens:
   - id: cec-mode
     icon: video-display
     title: Change CEC mode
-    description: Toggle the HDMI-CEC back-end path. Routing through the dedicated
-      GPU should be more reliable for home theater PCs, while routing natively could
-      be preferred in handhelds.
+    description: Toggle HDMI-CEC routing for home theater vs handhelds
     default: false
     status_script: ujust cec-mode status
     options:
@@ -882,8 +789,7 @@ screens:
   - id: iwd
     icon: network-wireless
     title: Change Wi-Fi system back-end
-    description: Toggle between the default «iwd» and legacy «wpa_supplicant» as the
-      software Wi-Fi back-end.
+    description: Toggle between iwd and wpa_supplicant
     default: false
     status_script: ujust iwd status
     options:
@@ -896,8 +802,7 @@ screens:
   - id: intel-i915-sleep-fix
     icon: utilities-system-monitor
     title: Configure power saving for Intel HD Graphics
-    description: Manage the «i915.enable_dc» power-saving setting for older i915 Intel
-      GPUs with suspend issues.
+    description: Manage i915 power-saving for suspend issues
     default: false
     status_script: ujust toggle-i915-sleep-fix status
     options:
@@ -932,16 +837,14 @@ screens:
   - id: benchmark
     icon: utilities-system-monitor
     title: Run basic processor benchmark
-    description: Start a one-minute CPU performance assessment.
+    description: Start one-minute CPU performance assessment
     default: false
     script: ujust benchmark; status=$?; echo; echo "Press Enter to close..."; read
       -r _; exit $status
   - id: reisub
     icon: system-shutdown
     title: Enable REISUB failure recovery
-    description: Toggle the ‘magic’ SysRq key and allow using the REISUB shortcut
-      to force-reboot your computer slightly more safely. Not recommended, as it allows
-      bypassing certain security features.
+    description: Toggle magic SysRq key for force-reboot (security risk)
     default: false
     status_script: ujust reisub status
     options:
@@ -954,7 +857,6 @@ screens:
   - id: regenerate-grub
     icon: preferences-system
     title: Regenerate GRUB configuration file
-    description: Use the current parameters to generate a new GRUB configuration file.
-      This will probe again for a Windows installation to appear as a boot option.
+    description: Generate new GRUB config and probe for Windows
     default: false
     script: ujust regenerate-grub

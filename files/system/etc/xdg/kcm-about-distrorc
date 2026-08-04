@@ -1,5 +1,5 @@
 [General]
-LogoPath=/usr/share/icons/breeze/apps/22/kde-symbolic.svg
+LogoPath=/usr/share/icons/hicolor/96x96/projectgdl-logo.png
 Name=Project GDL OS
 Website=https://github.com/ProjectGDL/base-os
 IssuesPage=https://github.com/ProjectGDL/base-os/issues

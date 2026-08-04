@@ -1,0 +1,11 @@
+{
+  "image-name": "base-os",
+  "image-vendor": "projectgdl",
+  "image-ref": "ostree-image-signed:docker://ghcr.io/projectgdl/base-os",
+  "image-tag": "latest",
+  "image-branch": "latest",
+  "base-image-name": "kinoite",
+  "fedora-version": "44",
+  "version": "44",
+  "version-pretty": "Latest (F44)"
+}
