@@ -18,7 +18,7 @@ modules:
   - from-file: kwin-rounded-corners.yml
   - from-file: fonts-shell.yml
   - from-file: omz-shell.yml
-  - from-file: portal-breeze.yml
+  - from-file: yafti.yml
   - from-file: default-flatpaks.yml
   - from-file: gdl-sysexts-just.yml
   - type: initramfs

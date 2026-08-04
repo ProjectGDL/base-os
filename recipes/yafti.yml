@@ -1,0 +1,10 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-v1.json
+type: containerfile
+snippets:
+  - |
+    RUN set -euo pipefail && \
+        git clone --depth=1 https://github.com/ProjectGDL/yafti /tmp/yafti-repo && \
+        cd /tmp/yafti-repo && \
+        make install DESTDIR=/ PREFIX=/usr && \
+        rm -rf /tmp/yafti-repo
