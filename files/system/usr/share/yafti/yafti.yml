@@ -47,7 +47,7 @@ screens:
     description: AI-powered IDE from Google — installed using Brew.
     default: false
     script: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew tap ublue-os/tap
-      && brew install --cask antigravity-linux
+      && brew trust --tap ublue-os/tap && brew install --cask antigravity-linux
   - id: asus
     icon: asus-rog
     title: asusctl & ROG Control Center
@@ -201,7 +201,7 @@ screens:
       Brew.
     default: false
     script: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew tap ublue-os/tap
-      && brew install --cask jetbrains-toolbox-linux
+      && brew trust --tap ublue-os/tap && brew install --cask jetbrains-toolbox-linux
   - id: lm-studio-linux
     icon: lm-studio
     title: LM Studio
@@ -209,7 +209,7 @@ screens:
       using Brew.
     default: false
     script: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew tap ublue-os/tap
-      && brew install --cask lm-studio-linux
+      && brew trust --tap ublue-os/tap && brew install --cask lm-studio-linux
   - id: lsfg-vk
     icon: lossless-scaling
     title: Lossless Scaling — Vulkan Layer
@@ -334,7 +334,7 @@ screens:
       Brew.
     default: false
     script: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew tap ublue-os/tap
-      && brew install --cask visual-studio-code-linux
+      && brew trust --tap ublue-os/tap && brew install --cask visual-studio-code-linux
   - id: vscodium-linux
     icon: vscodium
     title: VSCodium
@@ -342,7 +342,7 @@ screens:
       using Brew.
     default: false
     script: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew tap ublue-os/tap
-      && brew install --cask vscodium-linux
+      && brew trust --tap ublue-os/tap && brew install --cask vscodium-linux
   - id: waydroid
     icon: waydroid
     title: Waydroid

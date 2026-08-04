@@ -25,8 +25,12 @@ STATUS_TIMEOUT_SECONDS = 3
 ACTION_DIALOG_WIDTH = 420
 SYSTEM_ICONS_DIR = '/usr/share/yafti/icons'
 TILE_ICON_SIZE = 48
-TILE_WIDTH = 168
-TILE_HEIGHT = 148
+TILE_WIDTH = 180
+TILE_HEIGHT = 168
+TILE_TITLE_CHARS = 15
+TILE_TITLE_LINES = 2
+TILE_DESC_CHARS = 16
+TILE_DESC_LINES = 2
 DIALOG_ICON_SIZE = 64
 FALLBACK_ICON = 'application-x-executable'
 
@@ -449,6 +453,18 @@ def create_action_icon(action, size=TILE_ICON_SIZE):
 
 def build_terminal_command(script):
     """Return the default terminal launcher command."""
+    # Keep the terminal open after the script exits so the user can read
+    # its output/errors instead of the window vanishing immediately.
+    # The script runs in a subshell: if it calls `exit N` itself, that must
+    # only end the subshell, not this wrapper (otherwise the status check
+    # and the "press any key" pause below would never run).
+    wrapped = (
+        f"( {script}\n)\n"
+        'status=$?\n'
+        'echo\n'
+        'if [ "$status" -ne 0 ]; then echo "Command exited with status $status."; fi\n'
+        'read -n 1 -s -r -p "Press any key to close this window..."\n'
+    )
     return [
         "xdg-terminal-exec",
         f"--app-id={APP_ID}",
@@ -458,7 +474,7 @@ def build_terminal_command(script):
         "--noprofile",
         "--norc",
         "-lc",
-        script,
+        wrapped,
     ]
 
 
@@ -672,6 +688,32 @@ class YaftiGTK(Gtk.Window):
         scrolled.set_child(flow)
         return scrolled
 
+    def _make_tile_label(self, text, *, css_classes, max_chars, lines):
+        """Centered wrapping label; natural height only (no empty multi-line padding)."""
+        label = Gtk.Label(label=text)
+        label.set_wrap(True)
+        # NOTE: Gtk.WrapMode.WORD_CHAR makes GTK4's size measurement report
+        # min-width == full unwrapped text width, so at the tile's real (smaller)
+        # width GTK4 refuses to allocate a 2nd line and ellipsizes the 1st line
+        # instead of wrapping. WORD keeps min-width small (per-word) so the
+        # label correctly measures/allocates multiple lines, and still falls
+        # back to mid-word breaks via WORD_CHAR only when a single word can't
+        # fit (see natural_wrap_mode below).
+        label.set_wrap_mode(Gtk.WrapMode.WORD)
+        label.set_justify(Gtk.Justification.CENTER)
+        label.set_xalign(0.5)
+        # Cap natural width so long strings wrap instead of stretching the tile.
+        label.set_max_width_chars(max_chars)
+        label.set_lines(lines)
+        label.set_ellipsize(Pango.EllipsizeMode.END)
+        # FILL + hexpand: get allocated width from the fixed tile (wrap needs a real width).
+        label.set_hexpand(True)
+        label.set_halign(Gtk.Align.FILL)
+        label.set_valign(Gtk.Align.CENTER)
+        for cls in css_classes:
+            label.add_css_class(cls)
+        return label
+
     def create_action_item(self, action):
         """Create a clickable action tile with icon, title, and description."""
         button = Gtk.Button()
@@ -683,35 +725,39 @@ class YaftiGTK(Gtk.Window):
         button.add_css_class('action-tile-button')
         button.set_tooltip_text(tr(action.get('description') or action.get('title') or ''))
 
-        content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        content.set_halign(Gtk.Align.CENTER)
-        content.set_valign(Gtk.Align.CENTER)
-        set_widget_margins(content, 4, 4, 4, 4)
+        # Fixed outer size + homogeneous FlowBox keeps every row even.
+        # valign=START (not CENTER): pins the icon to the same Y in every tile.
+        # With CENTER, tiles with 1-line vs 2-line title/desc had different
+        # total content height, so the whole block (icon included) shifted
+        # up/down per tile and icons ended up on different rows.
+        # spacing=0: gaps below are set explicitly per-label (margin_top) so
+        # icon->title and title->desc can have different, wider breathing room.
+        content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        content.set_halign(Gtk.Align.FILL)
+        content.set_valign(Gtk.Align.START)
+        content.set_hexpand(True)
+        set_widget_margins(content, 10, 4, 4, 4)
 
         icon = create_action_icon(action, TILE_ICON_SIZE)
         content.append(icon)
 
-        title_label = Gtk.Label(label=tr(action.get('title', 'Action')))
-        title_label.set_wrap(True)
-        title_label.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
-        title_label.set_justify(Gtk.Justification.CENTER)
-        title_label.set_max_width_chars(16)
-        title_label.set_lines(2)
-        title_label.set_ellipsize(Pango.EllipsizeMode.END)
-        title_label.set_halign(Gtk.Align.CENTER)
-        title_label.add_css_class('action-tile-title')
+        title_label = self._make_tile_label(
+            tr(action.get('title', 'Action')),
+            css_classes=('action-tile-title',),
+            max_chars=TILE_TITLE_CHARS,
+            lines=TILE_TITLE_LINES,
+        )
+        title_label.set_margin_top(10)
         content.append(title_label)
 
         if action.get('description'):
-            desc_label = Gtk.Label(label=tr(action['description']))
-            desc_label.set_wrap(True)
-            desc_label.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
-            desc_label.set_justify(Gtk.Justification.CENTER)
-            desc_label.set_max_width_chars(18)
-            desc_label.set_lines(2)
-            desc_label.set_ellipsize(Pango.EllipsizeMode.END)
-            desc_label.set_halign(Gtk.Align.CENTER)
-            desc_label.add_css_class('dim-label')
+            desc_label = self._make_tile_label(
+                tr(action['description']),
+                css_classes=('dim-label',),
+                max_chars=TILE_DESC_CHARS,
+                lines=TILE_DESC_LINES,
+            )
+            desc_label.set_margin_top(8)
             content.append(desc_label)
 
         button.set_child(content)
@@ -720,6 +766,9 @@ class YaftiGTK(Gtk.Window):
         frame = Gtk.Frame()
         frame.set_child(button)
         frame.set_hexpand(True)
+        frame.set_vexpand(True)
+        frame.set_halign(Gtk.Align.FILL)
+        frame.set_valign(Gtk.Align.FILL)
         frame.set_size_request(TILE_WIDTH, TILE_HEIGHT)
         return frame
 
