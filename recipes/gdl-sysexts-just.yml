@@ -1,0 +1,6 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-v1.json
+type: containerfile
+snippets:
+  - |
+    RUN echo 'import "/usr/share/ublue-os/just/60-throne.just"' >> /usr/share/ublue-os/justfile
