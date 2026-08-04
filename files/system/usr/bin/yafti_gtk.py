@@ -13,16 +13,25 @@ import os
 import locale
 
 gi.require_version('Gtk', '4.0')
-gi.require_version('Adw', '1')
-from gi.repository import GLib, Gtk, Adw
+gi.require_version('GdkPixbuf', '2.0')
+from gi.repository import GLib, Gtk, Gdk, GdkPixbuf, Pango
 
 # Constants
 APP_ID = 'io.github.ublue_os.yafti_gtk'
 APP_TITLE = 'Project GDL Portal'
-DEFAULT_WINDOW_WIDTH = 800
-DEFAULT_WINDOW_HEIGHT = 600
+DEFAULT_WINDOW_WIDTH = 1000
+DEFAULT_WINDOW_HEIGHT = 700
 STATUS_TIMEOUT_SECONDS = 3
 ACTION_DIALOG_WIDTH = 420
+SYSTEM_ICONS_DIR = '/usr/share/yafti/icons'
+TILE_ICON_SIZE = 48
+TILE_WIDTH = 168
+TILE_HEIGHT = 148
+DIALOG_ICON_SIZE = 64
+FALLBACK_ICON = 'application-x-executable'
+
+# Populated by init_icons_dirs() from the config path (local debug + system install).
+ICONS_DIRS = [SYSTEM_ICONS_DIR]
 
 
 def set_widget_margins(widget, top=10, bottom=10, start=10, end=10):
@@ -57,19 +66,385 @@ def show_error_dialog(parent, title, message):
     dialog.destroy()
 
 
+def _breeze_theme_name(dark=None):
+    """Return Breeze or Breeze-Dark theme directory name."""
+    if dark is None:
+        dark = _prefer_dark_theme()
+    return 'Breeze-Dark' if dark else 'Breeze'
+
+
+def _breeze_gtk4_css_paths(dark=None):
+    """Ordered CSS paths: base Breeze theme, then Plasma color overrides."""
+    theme = _breeze_theme_name(dark)
+    paths = [
+        f'/usr/share/themes/{theme}/gtk-4.0/gtk.css',
+        # Light theme also ships gtk-dark.css as a re-export of Breeze-Dark
+    ]
+    # Plasma writes live color tokens for the active scheme here
+    user_gtk = os.path.expanduser('~/.config/gtk-4.0/gtk.css')
+    user_colors = os.path.expanduser('~/.config/gtk-4.0/colors.css')
+    if os.path.isfile(user_gtk):
+        paths.append(user_gtk)
+    elif os.path.isfile(user_colors):
+        paths.append(user_colors)
+    return paths
+
+
+def _load_css_file(path, priority):
+    """Load a CSS file onto the default display; return True on success."""
+    if not path or not os.path.isfile(path):
+        return False
+    display = Gdk.Display.get_default()
+    if display is None:
+        return False
+    try:
+        provider = Gtk.CssProvider()
+        provider.load_from_path(path)
+        Gtk.StyleContext.add_provider_for_display(display, provider, priority)
+        return True
+    except Exception as e:
+        print(f"Warning: could not load CSS {path}: {e}", file=sys.stderr)
+        return False
+
+
 def initialize_gtk():
-    """Initialize GTK, Adwaita, and application metadata."""
+    """Initialize GTK with Breeze (no libadwaita). GTK4 needs CSS loaded explicitly."""
+    dark = _prefer_dark_theme()
+    theme = _breeze_theme_name(dark)
+
+    # Must be set before Gtk.init so the settings backend sees it.
+    os.environ['GTK_THEME'] = theme
+    # Discourage portals / gsettings from forcing Adwaita
+    os.environ.setdefault('GTK_THEME_VARIANT', 'dark' if dark else 'light')
+
     GLib.set_prgname(APP_ID)
     Gtk.init()
-    # GDL: force Breeze theme for the first-run portal
+
     _settings = Gtk.Settings.get_default()
     if _settings is not None:
-        _settings.set_property('gtk-theme-name', 'Breeze')
-    
+        try:
+            _settings.set_property('gtk-theme-name', theme)
+        except Exception:
+            pass
+        try:
+            _settings.set_property('gtk-application-prefer-dark-theme', dark)
+        except Exception:
+            pass
+        try:
+            _settings.set_property('gtk-icon-theme-name', 'breeze-dark' if dark else 'breeze')
+        except Exception:
+            pass
+
+    # GTK4 falls back to Adwaita unless CSS is loaded explicitly. Push Breeze
+    # above the stock theme provider so it actually wins.
+    loaded = False
+    for path in _breeze_gtk4_css_paths(dark):
+        if path.startswith(os.path.expanduser('~')):
+            prio = Gtk.STYLE_PROVIDER_PRIORITY_USER
+        else:
+            # Above THEME (Adwaita), below our small app tweaks
+            prio = Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION - 10
+        if _load_css_file(path, prio):
+            loaded = True
+    if not loaded:
+        print(
+            "Warning: Breeze GTK4 CSS not found; UI may look like stock GTK.",
+            file=sys.stderr,
+        )
+
     try:
         Gtk.Window.set_default_icon_name(APP_ID)
     except Exception as e:
         print(f"Warning: Could not set app icon: {e}")
+
+    css = b"""
+    .action-tile-button {
+      padding: 10px 8px;
+    }
+    .action-tile-title {
+      font-weight: bold;
+    }
+    """
+    try:
+        provider = Gtk.CssProvider()
+        provider.load_from_data(css)
+        display = Gdk.Display.get_default()
+        if display is not None:
+            Gtk.StyleContext.add_provider_for_display(
+                display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+            )
+    except Exception as e:
+        print(f"Warning: Could not load tile CSS: {e}")
+
+
+def icons_dir_for_config(config_file):
+    """Icons live next to the config: <dir of yafti.yml>/icons/."""
+    config_dir = os.path.dirname(os.path.abspath(config_file))
+    return os.path.join(config_dir, "icons")
+
+
+def init_icons_dirs(config_file, extra_dirs=None):
+    """Prefer icons next to the YAML (debug tree), then the system path."""
+    global ICONS_DIRS
+    dirs = []
+    local = icons_dir_for_config(config_file)
+    if local:
+        dirs.append(local)
+    if SYSTEM_ICONS_DIR not in dirs:
+        dirs.append(SYSTEM_ICONS_DIR)
+    if extra_dirs:
+        for d in extra_dirs:
+            if d and d not in dirs:
+                dirs.append(d)
+    ICONS_DIRS = dirs
+
+
+def resolve_icon_file(name):
+    """Return a path for an icon name from ICONS_DIRS, or an absolute/relative file."""
+    if not name:
+        return None
+    if os.path.isabs(name):
+        return name if os.path.isfile(name) else None
+    if os.path.sep in name or name.startswith('.'):
+        # Relative to first icons dir / CWD for local debug paths in YAML
+        for base in list(ICONS_DIRS) + [os.getcwd()]:
+            candidate = os.path.normpath(os.path.join(base, name))
+            if os.path.isfile(candidate):
+                return candidate
+        if os.path.isfile(name):
+            return name
+        return None
+
+    base_name = os.path.basename(name)
+    stem, ext = os.path.splitext(base_name)
+    for icons_dir in ICONS_DIRS:
+        candidates = []
+        if ext:
+            candidates.append(os.path.join(icons_dir, base_name))
+        else:
+            for suffix in ('.svg', '.png', '.svgz', '.jpg', '.jpeg', '.webp'):
+                candidates.append(os.path.join(icons_dir, stem + suffix))
+        for path in candidates:
+            if os.path.isfile(path):
+                return path
+    return None
+
+
+_DARK_THEME_CACHE = None
+
+
+def _ini_key(path, key):
+    """Return value for key= in a simple INI file (first match), or None."""
+    try:
+        with open(path, 'r', encoding='utf-8', errors='replace') as fh:
+            for line in fh:
+                line = line.strip()
+                if not line or line.startswith('#') or line.startswith(';'):
+                    continue
+                if line.lower().startswith(key.lower() + '='):
+                    return line.split('=', 1)[1].strip().strip('"').strip("'")
+    except OSError:
+        pass
+    return None
+
+
+def _scheme_is_dark(name):
+    """True if a Plasma/GTK color-scheme or theme name looks dark."""
+    if not name:
+        return False
+    n = name.lower().replace(' ', '')
+    if 'light' in n:
+        return False
+    return 'dark' in n
+
+
+def _prefer_dark_theme():
+    """True when Plasma/GTK is using a dark color scheme. No libadwaita."""
+    global _DARK_THEME_CACHE
+    if _DARK_THEME_CACHE is not None:
+        return _DARK_THEME_CACHE
+
+    # 1) Explicit env (only if we didn't set it ourselves yet — still trustworthy)
+    gtk_theme = os.environ.get('GTK_THEME', '')
+    if gtk_theme:
+        # Breeze vs Breeze-Dark; ignore bare "dark" substring in unrelated names with light
+        if _scheme_is_dark(gtk_theme):
+            _DARK_THEME_CACHE = True
+            return True
+        if 'breeze' in gtk_theme.lower() and 'dark' not in gtk_theme.lower():
+            _DARK_THEME_CACHE = False
+            return False
+
+    # 2) Plasma ColorScheme key only (not whole-file greps — false positives)
+    for cmd in (
+        ['kreadconfig6', '--file', 'kdeglobals', '--group', 'General', '--key', 'ColorScheme'],
+        ['kreadconfig5', '--file', 'kdeglobals', '--group', 'General', '--key', 'ColorScheme'],
+    ):
+        try:
+            out = subprocess.check_output(
+                cmd, stderr=subprocess.DEVNULL, text=True, timeout=1
+            ).strip()
+            if out:
+                _DARK_THEME_CACHE = _scheme_is_dark(out)
+                return _DARK_THEME_CACHE
+        except Exception:
+            continue
+
+    for conf in (
+        os.path.expanduser('~/.config/kdeglobals'),
+        os.path.expanduser('~/.config/kdedefaults/kdeglobals'),
+    ):
+        scheme = _ini_key(conf, 'ColorScheme')
+        if scheme:
+            _DARK_THEME_CACHE = _scheme_is_dark(scheme)
+            return _DARK_THEME_CACHE
+
+    # 3) gtk settings written by plasma-integration
+    for conf in (
+        os.path.expanduser('~/.config/gtk-4.0/settings.ini'),
+        os.path.expanduser('~/.config/gtk-3.0/settings.ini'),
+    ):
+        prefer = _ini_key(conf, 'gtk-application-prefer-dark-theme')
+        theme = _ini_key(conf, 'gtk-theme-name')
+        if prefer is not None:
+            _DARK_THEME_CACHE = prefer.lower() in ('true', '1', 'yes')
+            # theme name can still force dark (Breeze-Dark) even if prefer flag is false
+            if not _DARK_THEME_CACHE and _scheme_is_dark(theme or ''):
+                _DARK_THEME_CACHE = True
+            return _DARK_THEME_CACHE
+        if theme:
+            _DARK_THEME_CACHE = _scheme_is_dark(theme)
+            return _DARK_THEME_CACHE
+
+    # 4) Gtk.Settings last (may be unset before init)
+    settings = Gtk.Settings.get_default()
+    if settings is not None:
+        try:
+            if settings.get_property('gtk-application-prefer-dark-theme'):
+                _DARK_THEME_CACHE = True
+                return True
+        except Exception:
+            pass
+        try:
+            theme = str(settings.get_property('gtk-theme-name') or '')
+            if theme:
+                _DARK_THEME_CACHE = _scheme_is_dark(theme)
+                return _DARK_THEME_CACHE
+        except Exception:
+            pass
+
+    _DARK_THEME_CACHE = False
+    return False
+
+
+def _pixbuf_is_monochrome(pixbuf, chroma_limit=18, sample_step=3):
+    """True if opaque pixels are essentially grayscale (symbolic / simple-icons)."""
+    width = pixbuf.get_width()
+    height = pixbuf.get_height()
+    n_channels = pixbuf.get_n_channels()
+    rowstride = pixbuf.get_rowstride()
+    pixels = pixbuf.get_pixels()
+    chroma_sum = 0
+    count = 0
+    for y in range(0, height, sample_step):
+        row = y * rowstride
+        for x in range(0, width, sample_step):
+            i = row + x * n_channels
+            if n_channels >= 4 and pixels[i + 3] < 40:
+                continue
+            r, g, b = pixels[i], pixels[i + 1], pixels[i + 2]
+            chroma_sum += max(r, g, b) - min(r, g, b)
+            count += 1
+            if count >= 64 and (chroma_sum / count) > chroma_limit:
+                return False
+    if count < 8:
+        return False
+    return (chroma_sum / count) <= chroma_limit
+
+
+def _recolor_monochrome_pixbuf(pixbuf, rgb):
+    """Paint grayscale/symbolic icon with solid rgb, keeping alpha as the mask."""
+    width = pixbuf.get_width()
+    height = pixbuf.get_height()
+    if not pixbuf.get_has_alpha():
+        pixbuf = pixbuf.add_alpha(False, 0, 0, 0)
+    n_channels = pixbuf.get_n_channels()
+    rowstride = pixbuf.get_rowstride()
+    src = pixbuf.get_pixels()
+    data = bytearray(src)
+    r_out, g_out, b_out = rgb
+    for y in range(height):
+        row = y * rowstride
+        for x in range(width):
+            i = row + x * n_channels
+            if data[i + 3] == 0:
+                continue
+            # Keep source alpha (mask / anti-alias); replace RGB with theme foreground
+            data[i] = r_out
+            data[i + 1] = g_out
+            data[i + 2] = b_out
+    return GdkPixbuf.Pixbuf.new_from_bytes(
+        GLib.Bytes.new(bytes(data)),
+        GdkPixbuf.Colorspace.RGB,
+        True,
+        8,
+        width,
+        height,
+        rowstride,
+    )
+
+
+def _load_icon_pixbuf(file_path, size):
+    """Load icon file scaled to size; recolor monochrome assets for light/dark UI."""
+    try:
+        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(file_path, size, size)
+    except GLib.Error:
+        return None
+    if pixbuf is None:
+        return None
+    if not _pixbuf_is_monochrome(pixbuf):
+        return pixbuf
+    # Match Breeze text contrast: solid black on light, light gray on dark
+    if _prefer_dark_theme():
+        rgb = (252, 252, 252)
+    else:
+        rgb = (24, 24, 24)
+    try:
+        return _recolor_monochrome_pixbuf(pixbuf, rgb)
+    except Exception:
+        return pixbuf
+
+
+def create_action_icon(action, size=TILE_ICON_SIZE):
+    """Build a Gtk.Image from action icon (file under yafti/icons or theme name)."""
+    raw = (action.get('icon') or action.get('id') or FALLBACK_ICON)
+    raw = str(raw).strip() if raw else FALLBACK_ICON
+
+    image = Gtk.Image()
+    image.set_pixel_size(size)
+    image.set_halign(Gtk.Align.CENTER)
+
+    file_path = resolve_icon_file(raw)
+    if file_path:
+        pixbuf = _load_icon_pixbuf(file_path, size)
+        if pixbuf is not None:
+            try:
+                image.set_from_paintable(Gdk.Texture.new_for_pixbuf(pixbuf))
+            except Exception:
+                image.set_from_file(file_path)
+            return image
+        image.set_from_file(file_path)
+        return image
+
+    icon_name = os.path.splitext(os.path.basename(raw))[0] or FALLBACK_ICON
+    display = Gdk.Display.get_default()
+    if display is not None:
+        theme = Gtk.IconTheme.get_for_display(display)
+        if theme is not None and not theme.has_icon(icon_name):
+            if theme.has_icon(FALLBACK_ICON):
+                icon_name = FALLBACK_ICON
+    image.set_from_icon_name(icon_name)
+    return image
 
 
 def build_terminal_command(script):
@@ -230,14 +605,17 @@ class YaftiGTK(Gtk.Window):
         # Add notebook to stack
         self.content_stack.add_named(self.notebook, "tabs")
 
-        # Search results page
+        # Search results page (tiles, same as screens)
         search_scrolled = Gtk.ScrolledWindow()
         search_scrolled.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
-        results_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
-        results_box.set_vexpand(True)
-        set_widget_margins(results_box, 10, 10, 10, 10)
-        self.search_results_box = results_box
-        search_scrolled.set_child(results_box)
+        search_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        set_widget_margins(search_outer, 10, 10, 10, 10)
+        self.search_header = Gtk.Label()
+        self.search_header.set_xalign(0)
+        search_outer.append(self.search_header)
+        self.search_results_box = self.create_actions_flow()
+        search_outer.append(self.search_results_box)
+        search_scrolled.set_child(search_outer)
         self.content_stack.add_named(search_scrolled, "search")
 
         # Start with tabs visible
@@ -266,52 +644,83 @@ class YaftiGTK(Gtk.Window):
             show_error_dialog(self, tr("YAML parsing error"), str(e))
             sys.exit(1)
 
+    def create_actions_flow(self):
+        """Create a FlowBox used for action tiles on screens and in search."""
+        flow = Gtk.FlowBox()
+        flow.set_valign(Gtk.Align.START)
+        flow.set_max_children_per_line(6)
+        flow.set_min_children_per_line(2)
+        flow.set_selection_mode(Gtk.SelectionMode.NONE)
+        flow.set_homogeneous(True)
+        flow.set_row_spacing(12)
+        flow.set_column_spacing(12)
+        flow.set_hexpand(True)
+        flow.set_vexpand(False)
+        set_widget_margins(flow, 12, 12, 12, 12)
+        return flow
+
     def create_screen_page(self, screen):
-        """Create a page for a screen with all its actions."""
+        """Create a page for a screen with all its actions as icon tiles."""
         scrolled = Gtk.ScrolledWindow()
         scrolled.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        scrolled.set_propagate_natural_height(True)
 
-        page_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
-        set_widget_margins(page_box, 10, 10, 10, 10)
-
+        flow = self.create_actions_flow()
         for action in screen.get('actions', []):
-            action_box = self.create_action_item(action)
-            page_box.append(action_box)
+            flow.append(self.create_action_item(action))
 
-        scrolled.set_child(page_box)
+        scrolled.set_child(flow)
         return scrolled
 
     def create_action_item(self, action):
-        """Create a clickable action item."""
+        """Create a clickable action tile with icon, title, and description."""
         button = Gtk.Button()
+        button.set_size_request(TILE_WIDTH, TILE_HEIGHT)
         button.set_hexpand(True)
+        button.set_vexpand(True)
         button.set_halign(Gtk.Align.FILL)
+        button.set_valign(Gtk.Align.FILL)
+        button.add_css_class('action-tile-button')
+        button.set_tooltip_text(tr(action.get('description') or action.get('title') or ''))
 
-        button_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-        set_widget_margins(button_box, 8, 8, 8, 8)
+        content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        content.set_halign(Gtk.Align.CENTER)
+        content.set_valign(Gtk.Align.CENTER)
+        set_widget_margins(content, 4, 4, 4, 4)
 
-        text_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        icon = create_action_icon(action, TILE_ICON_SIZE)
+        content.append(icon)
 
-        title_label = Gtk.Label()
-        title_label.set_markup(f"<b>{escape_markup(tr(action.get('title', 'Action')))}</b>")
-        title_label.set_xalign(0)
-        text_box.append(title_label)
+        title_label = Gtk.Label(label=tr(action.get('title', 'Action')))
+        title_label.set_wrap(True)
+        title_label.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
+        title_label.set_justify(Gtk.Justification.CENTER)
+        title_label.set_max_width_chars(16)
+        title_label.set_lines(2)
+        title_label.set_ellipsize(Pango.EllipsizeMode.END)
+        title_label.set_halign(Gtk.Align.CENTER)
+        title_label.add_css_class('action-tile-title')
+        content.append(title_label)
 
         if action.get('description'):
             desc_label = Gtk.Label(label=tr(action['description']))
-            desc_label.set_xalign(0)
             desc_label.set_wrap(True)
-            desc_label.set_max_width_chars(60)
+            desc_label.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
+            desc_label.set_justify(Gtk.Justification.CENTER)
+            desc_label.set_max_width_chars(18)
+            desc_label.set_lines(2)
+            desc_label.set_ellipsize(Pango.EllipsizeMode.END)
+            desc_label.set_halign(Gtk.Align.CENTER)
             desc_label.add_css_class('dim-label')
-            text_box.append(desc_label)
+            content.append(desc_label)
 
-        button_box.append(text_box)
-        button.set_child(button_box)
+        button.set_child(content)
         button.connect("clicked", self.on_action_clicked, action)
 
         frame = Gtk.Frame()
         frame.set_child(button)
-
+        frame.set_hexpand(True)
+        frame.set_size_request(TILE_WIDTH, TILE_HEIGHT)
         return frame
 
     def _build_actions_index(self):
@@ -357,18 +766,16 @@ class YaftiGTK(Gtk.Window):
 
         clear_container(self.search_results_box)
 
-        header = Gtk.Label()
-        header.set_markup("<b>" + escape_markup(tr("Search results")) + "</b>")
-        header.set_xalign(0)
-        self.search_results_box.append(header)
-
         if matches:
+            self.search_header.set_markup(
+                "<b>" + escape_markup(tr("Search results")) + "</b>"
+            )
             for item in matches:
                 self.search_results_box.append(self.create_action_item(item['action']))
         else:
-            empty = Gtk.Label(label=tr("No matches found"))
-            empty.set_xalign(0)
-            self.search_results_box.append(empty)
+            self.search_header.set_markup(
+                "<b>" + escape_markup(tr("No matches found")) + "</b>"
+            )
 
         self.search_results_box.set_visible(True)
         self.content_stack.set_visible_child_name("search")
@@ -570,10 +977,15 @@ class YaftiGTK(Gtk.Window):
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
         set_widget_margins(root, 16, 16, 16, 16)
 
+        header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        header.append(create_action_icon(action, DIALOG_ICON_SIZE))
         title_label = Gtk.Label()
         title_label.set_markup(f"<big><b>{escape_markup(tr(action.get('title', 'Action')))}</b></big>")
         title_label.set_xalign(0)
-        root.append(title_label)
+        title_label.set_wrap(True)
+        title_label.set_hexpand(True)
+        header.append(title_label)
+        root.append(header)
 
         description = action.get('description')
         if description:
@@ -697,8 +1109,12 @@ def parse_args(argv):
 def main():
     config_file, lang, locale_file, locale_dir = parse_args(sys.argv[1:])
     init_i18n(config_file, lang=lang, locale_file=locale_file, locale_dir=locale_dir)
+    init_icons_dirs(config_file)
 
-    # Initialize GTK before creating the window.
+    # Pin Breeze before Gtk.init (GTK4 ignores gtk-theme-name without this + CSS load).
+    _dark = _prefer_dark_theme()
+    os.environ['GTK_THEME'] = _breeze_theme_name(_dark)
+
     initialize_gtk()
 
     loop = GLib.MainLoop()
