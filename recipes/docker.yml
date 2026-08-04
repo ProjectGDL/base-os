@@ -14,4 +14,4 @@ snippets:
           docker-compose-plugin && \
         systemctl enable docker.service && \
         systemctl enable containerd.service && \
-        groupadd -f docker && \
+        groupadd -f docker
