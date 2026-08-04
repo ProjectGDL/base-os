@@ -6,3 +6,4 @@ configurations:
     scope: system
     install:
       - com.dec05eba.gpu_screen_recorder
+      - it.mijorus.gearlever

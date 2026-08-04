@@ -11,7 +11,7 @@ modules:
     files:
       - source: system
         destination: /
-  
+
   - from-file: os-release-config.yml
   - from-file: bazzite-cleanup.yml
   - from-file: input-group.yml
@@ -20,5 +20,6 @@ modules:
   - from-file: omz-shell.yml
   - from-file: portal-breeze.yml
   - from-file: default-flatpaks.yml
+  - from-file: gdl-sysexts-just.yml
   - type: initramfs
   - type: signing
