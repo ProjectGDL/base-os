@@ -1,0 +1,10 @@
+[9337377e-d0c8-4136-99a6-995ff142be14]
+Description=GD Tearing settings
+clientmachine=localhost
+tearingrule=2
+wmclass=steam_app_322170
+wmclassmatch=1
+
+[General]
+count=1
+rules=9337377e-d0c8-4136-99a6-995ff142be14

@@ -1,0 +1,6 @@
+[General]
+autoSaveImage=true
+clipboardGroup=PostScreenshotCopyImage
+
+[GuiConfig]
+quitAfterSaveCopyExport=true
