@@ -3,4 +3,5 @@
 type: containerfile
 snippets:
   - |
-    RUN grep -q '^input:' /etc/group || echo 'input:x:104:' >> /etc/group
+    RUN echo 'g input - -' > /usr/lib/sysusers.d/input.conf && \
+        systemctl enable gdl-input-group.service

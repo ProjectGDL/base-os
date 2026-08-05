@@ -1,0 +1,9 @@
+[Unit]
+Description=Add wheel members to the input group (useful for CBF)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/gdl-input-group
+
+[Install]
+WantedBy=default.target
