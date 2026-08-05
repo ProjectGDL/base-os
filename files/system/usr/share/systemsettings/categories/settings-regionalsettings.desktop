@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Service
+X-KDE-System-Settings-Category=regionalsettings
+X-KDE-System-Settings-Parent-Category=
+X-KDE-Weight=70
+Icon=preferences-desktop-locale
+
+Name=Language, Region & Time
+Name[ru]=Язык, регион и время

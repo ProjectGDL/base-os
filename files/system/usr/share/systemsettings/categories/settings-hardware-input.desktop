@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Service
+X-KDE-System-Settings-Category=input-devices
+X-KDE-System-Settings-Parent-Category=
+X-KDE-Weight=30
+Icon=preferences-desktop-peripherals
+
+Name=Devices
+Name[ru]=Устройства

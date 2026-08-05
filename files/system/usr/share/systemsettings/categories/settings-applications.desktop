@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Service
+X-KDE-System-Settings-Category=applications
+X-KDE-System-Settings-Parent-Category=
+X-KDE-Weight=50
+Icon=applications-all
+
+Name=Applications & Notifications
+Name[ru]=Приложения и уведомления

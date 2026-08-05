@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Service
+X-KDE-System-Settings-Category=hardware
+X-KDE-System-Settings-Parent-Category=input-devices
+X-KDE-Weight=70
+Icon=preferences-desktop-peripherals
+
+Name=Connected Devices & Storage
+Name[ru]=Подключённые устройства и накопители

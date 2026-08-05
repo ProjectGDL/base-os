@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Service
+X-KDE-System-Settings-Category=personalization
+X-KDE-System-Settings-Parent-Category=
+X-KDE-Weight=60
+Icon=preferences-desktop-user
+
+Name=Personal Settings
+Name[ru]=Личные настройки
