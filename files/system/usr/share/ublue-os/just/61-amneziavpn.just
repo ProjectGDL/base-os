@@ -31,6 +31,9 @@ amneziavpn-install:
     sudo update-desktop-database /usr/share/applications 2>/dev/null || true
     sudo gtk-update-icon-cache /usr/share/icons/hicolor 2>/dev/null || true
 
+    sudo systemctl daemon-reload
+    sudo systemctl enable --now AmneziaVPN
+
     if command -v kbuildsycoca6 >/dev/null 2>&1 && [[ "$XDG_CURRENT_DESKTOP" == *"KDE"* ]]; then
         kbuildsycoca6
     fi
@@ -46,8 +49,13 @@ amneziavpn-remove:
         echo "AmneziaVPN is not installed"
         exit 0
     fi
+
+    sudo systemctl disable --now AmneziaVPN
+
     sudo rm /var/lib/extensions/amneziavpn.raw
     sudo systemd-sysext refresh
+
+    sudo systemctl daemon-reload
 
     if command -v kbuildsycoca6 >/dev/null 2>&1 && [[ "$XDG_CURRENT_DESKTOP" == *"KDE"* ]]; then
         kbuildsycoca6
