@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-v1.json
+
+type: containerfile
+snippets:
+  - |
+    RUN set -euo pipefail && \
+        dnf -y install \
+          libvirt \
+          libvirt-daemon-kvm \
+          qemu-kvm \
+          virt-install \
+          bridge-utils && \
+        systemctl enable libvirtd.service && \
+        systemctl enable bazzite-dx-groups.service

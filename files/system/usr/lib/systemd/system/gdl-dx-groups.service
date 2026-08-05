@@ -1,0 +1,9 @@
+[Unit]
+Description=Add wheel members to dx groups
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/gdl-dx-groups
+
+[Install]
+WantedBy=default.target
