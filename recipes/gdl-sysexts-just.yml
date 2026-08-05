@@ -4,4 +4,5 @@ type: containerfile
 snippets:
   - |
     RUN echo 'import "/usr/share/ublue-os/just/60-throne.just"' >> /usr/share/ublue-os/justfile && \
-        echo 'import "/usr/share/ublue-os/just/61-amneziavpn.just"' >> /usr/share/ublue-os/justfile
+        echo 'import "/usr/share/ublue-os/just/61-amneziavpn.just"' >> /usr/share/ublue-os/justfile && \
+        echo 'import "/usr/share/ublue-os/just/62-v2rayn.just"' >> /usr/share/ublue-os/justfile
