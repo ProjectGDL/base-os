@@ -12,4 +12,4 @@ snippets:
           virt-install \
           bridge-utils && \
         systemctl enable libvirtd.service && \
-        systemctl enable bazzite-dx-groups.service
+        systemctl enable gdl-dx-groups.service
