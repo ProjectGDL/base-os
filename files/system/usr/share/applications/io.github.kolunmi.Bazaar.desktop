@@ -1,0 +1,20 @@
+[Desktop Entry]
+Name=Bazaar
+Name[ru]=Bazaar
+Comment=Add, remove or update flatpak software on this computer
+Comment[ru]=Установка, удаление или обновление Flatpak приложений на этом компьютере
+Exec=env http_proxy=http://127.0.0.1:6592 https_proxy=http://127.0.0.1:6592 bazaar %U
+Icon=io.github.kolunmi.Bazaar
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;System;PackageManager;Discover;Flatpak;Software;Store;
+StartupNotify=true
+MimeType=x-scheme-handler/appstream;x-scheme-handler/flatpak;x-scheme-handler/flatpak+https;application/vnd.flatpak;application/vnd.flatpak.ref;
+Actions=new-window;
+X-Purism-FormFactor=Workstation;Mobile;
+
+[Desktop Action new-window]
+Name=New Window
+Name[ru]=Новое окно
+Exec=env http_proxy=http://127.0.0.1:6592 https_proxy=http://127.0.0.1:6592 bazaar %U

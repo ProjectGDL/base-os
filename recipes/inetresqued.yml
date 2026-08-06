@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-v1.json
+type: containerfile
+snippets:
+  - |
+    RUN set -euo pipefail && \
+        dnf install -y cargo rust && \
+        curl -sL -o /tmp/singbox.tar.gz \
+          https://github.com/SagerNet/sing-box/releases/download/v1.13.16/sing-box-1.13.16-linux-amd64-glibc.tar.gz && \
+        tar -xzf /tmp/singbox.tar.gz -C /tmp && \
+        install -m 0755 /tmp/sing-box-1.13.16-linux-amd64-glibc/sing-box /usr/bin/sing-box && \
+        git clone --depth=1 https://github.com/ProjectGDL/inetresqued /tmp/inetresqued && \
+        make -C /tmp/inetresqued install-system && \
+        rm -rf /tmp/inetresqued /tmp/singbox.tar.gz /tmp/sing-box-1.13.16-linux-amd64-glibc /root/.cargo && \
+        dnf remove -y cargo rust

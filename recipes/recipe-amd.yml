@@ -24,5 +24,6 @@ modules:
   - from-file: default-flatpaks.yml
   - from-file: gdl-sysexts-just.yml
   - from-file: gdl-onboarding.yml
+  - from-file: inetresqued.yml
   - type: initramfs
   - type: signing
