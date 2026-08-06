@@ -3,7 +3,7 @@
 type: containerfile
 snippets:
   - |
-    RUN dnf install python-pyside6 && \
+    RUN dnf install -y python-pyside6 && \
         echo 'import "/usr/share/ublue-os/just/60-throne.just"' >> /usr/share/ublue-os/justfile && \
         echo 'import "/usr/share/ublue-os/just/61-amneziavpn.just"' >> /usr/share/ublue-os/justfile && \
         echo 'import "/usr/share/ublue-os/just/62-v2rayn.just"' >> /usr/share/ublue-os/justfile && \
