@@ -2,6 +2,7 @@
 kwin4_effect_roundedcornersEnabled=true
 
 [Round-Corners]
+Exclusions=apponboarding,python-onboarding,io.github.kolunmi.Bazaar,com.ranfdev.DistroShelf,com.vysp3r.ProtonPlus
 InactiveCornerRadius=14
 InactiveOutlineThickness=0
 InactiveSecondOutlineThickness=0.75

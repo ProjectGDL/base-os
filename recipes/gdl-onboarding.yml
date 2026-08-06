@@ -1,0 +1,10 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-v1.json
+type: containerfile
+snippets:
+  - |
+    RUN set -euo pipefail && \
+        dnf install -y python-pyside6 layer-shell-qt python3 && \
+        git clone --depth=1 https://github.com/ProjectGDL/gdl-onboarding /tmp/gdl-onboarding && \
+        make -C /tmp/gdl-onboarding install PREFIX=/usr DESTDIR=/ && \
+        rm -rf /tmp/gdl-onboarding

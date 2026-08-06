@@ -98,6 +98,7 @@ var layout = {
             "hiding": "normal",
             "lengthMode": "fill",
             "location": "bottom",
+            "floating": false,
             "maximumLength": 106.625,
             "minimumLength": 106.625,
             "offset": 0,

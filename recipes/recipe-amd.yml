@@ -23,5 +23,6 @@ modules:
   - from-file: yafti.yml
   - from-file: default-flatpaks.yml
   - from-file: gdl-sysexts-just.yml
+  - from-file: gdl-onboarding.yml
   - type: initramfs
   - type: signing
