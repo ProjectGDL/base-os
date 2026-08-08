@@ -9,4 +9,5 @@ snippets:
         echo 'import "/usr/share/ublue-os/just/62-v2rayn.just"' >> /usr/share/ublue-os/justfile && \
         echo 'import "/usr/share/ublue-os/just/63-tgwsproxy.just"' >> /usr/share/ublue-os/justfile && \
         echo 'import "/usr/share/ublue-os/just/64-inetresqued.just"' >> /usr/share/ublue-os/justfile && \
-        echo 'import "/usr/share/ublue-os/just/65-zapret.just"' >> /usr/share/ublue-os/justfile
+        echo 'import "/usr/share/ublue-os/just/65-zapret.just"' >> /usr/share/ublue-os/justfile && \
+        echo 'import "/usr/share/ublue-os/just/66-warp.just"' >> /usr/share/ublue-os/justfile
