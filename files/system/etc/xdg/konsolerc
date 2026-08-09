@@ -1,0 +1,11 @@
+[Desktop Entry]
+DefaultProfile=GDL Konsole.profile
+
+[General]
+ConfigVersion=1
+
+[MainWindow]
+MenuBar=Enabled
+
+[UiSettings]
+ColorScheme=BreezeDark
