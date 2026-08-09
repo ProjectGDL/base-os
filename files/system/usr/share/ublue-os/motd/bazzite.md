@@ -10,5 +10,5 @@
 | `brew help` | Manage command line packages |
 
 - **** [Report an issue](https://github.com/ProjectGDL/base-os/issues)
-- **󰈙** [Telegram](https://t.me/ProjectGDL/7)
+- **** [Telegram](https://t.me/gdl_official/4)
 - **󰙯** [Discord](https://discord.gg/Cfvy4zJQpv)
